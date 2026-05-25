@@ -1,0 +1,1030 @@
+{
+  "0x0000": {
+    "name": "GPU_STATUS",
+    "description": "Top-level GPU execution and pipeline status register",
+    "access_type": "RO",
+    "current_value": "0x00000005",
+    "bit_fields": [
+      {
+        "field_name": "PIPELINE_ACTIVE",
+        "start_bit": 0,
+        "bit_length": 1,
+        "value_meaning": {
+          "0": { "meaning": "Pipeline idle", "status": "Healthy" },
+          "1": { "meaning": "Pipeline executing commands", "status": "Healthy" }
+        }
+      },
+      {
+        "field_name": "CONTEXT_SWITCH",
+        "start_bit": 1,
+        "bit_length": 1,
+        "value_meaning": {
+          "0": { "meaning": "No context switch in progress", "status": "Healthy" },
+          "1": { "meaning": "Context switch in progress", "status": "Warning" }
+        }
+      },
+      {
+        "field_name": "SHADER_STALL",
+        "start_bit": 2,
+        "bit_length": 1,
+        "value_meaning": {
+          "0": { "meaning": "Shader units running normally", "status": "Healthy" },
+          "1": { "meaning": "Shader stall detected (dependency or resource conflict)", "status": "Warning" }
+        }
+      },
+      {
+        "field_name": "MEMORY_BUSY",
+        "start_bit": 3,
+        "bit_length": 1,
+        "value_meaning": {
+          "0": { "meaning": "Memory subsystem idle", "status": "Healthy" },
+          "1": { "meaning": "Memory subsystem busy", "status": "Healthy" }
+        }
+      },
+      {
+        "field_name": "DISPLAY_ACTIVE",
+        "start_bit": 4,
+        "bit_length": 1,
+        "value_meaning": {
+          "0": { "meaning": "Display output disabled", "status": "Healthy" },
+          "1": { "meaning": "Display engine actively driving output", "status": "Healthy" }
+        }
+      },
+      {
+        "field_name": "RESERVED",
+        "start_bit": 5,
+        "bit_length": 27,
+        "value_meaning": {
+          "0": { "meaning": "Reserved, must be zero", "status": "Healthy" }
+        }
+      }
+    ]
+  },
+
+  "0x0004": {
+    "name": "GPU_CTRL",
+    "description": "Master GPU control register for enabling functional blocks and pipeline operations",
+    "access_type": "RW",
+    "current_value": "0x00000013",
+    "bit_fields": [
+      {
+        "field_name": "GPU_ENABLE",
+        "start_bit": 0,
+        "bit_length": 1,
+        "value_meaning": {
+          "0": { "meaning": "GPU core disabled", "status": "Warning" },
+          "1": { "meaning": "GPU core enabled and operational", "status": "Healthy" }
+        }
+      },
+      {
+        "field_name": "COMPUTE_ENABLE",
+        "start_bit": 1,
+        "bit_length": 1,
+        "value_meaning": {
+          "0": { "meaning": "Compute pipeline disabled", "status": "Warning" },
+          "1": { "meaning": "Compute pipeline enabled", "status": "Healthy" }
+        }
+      },
+      {
+        "field_name": "RENDER_ENABLE",
+        "start_bit": 2,
+        "bit_length": 1,
+        "value_meaning": {
+          "0": { "meaning": "Render pipeline disabled", "status": "Warning" },
+          "1": { "meaning": "Render pipeline enabled", "status": "Healthy" }
+        }
+      },
+      {
+        "field_name": "DISPLAY_ENABLE",
+        "start_bit": 3,
+        "bit_length": 1,
+        "value_meaning": {
+          "0": { "meaning": "Display engine disabled", "status": "Healthy" },
+          "1": { "meaning": "Display engine enabled", "status": "Healthy" }
+        }
+      },
+      {
+        "field_name": "SOFT_RESET",
+        "start_bit": 4,
+        "bit_length": 1,
+        "value_meaning": {
+          "0": { "meaning": "Normal operation", "status": "Healthy" },
+          "1": { "meaning": "Soft reset in progress (self-clears on completion)", "status": "Warning" }
+        }
+      },
+      {
+        "field_name": "RESERVED",
+        "start_bit": 5,
+        "bit_length": 27,
+        "value_meaning": {
+          "0": { "meaning": "Reserved, must be zero", "status": "Healthy" }
+        }
+      }
+    ]
+  },
+
+  "0x0008": {
+    "name": "GPU_INT_STATUS",
+    "description": "Interrupt status register; reflects raw pending interrupt flags from all GPU subsystems",
+    "access_type": "RO",
+    "current_value": "0x00000000",
+    "bit_fields": [
+      {
+        "field_name": "FAULT_INT",
+        "start_bit": 0,
+        "bit_length": 1,
+        "value_meaning": {
+          "0": { "meaning": "No fault interrupt pending", "status": "Healthy" },
+          "1": { "meaning": "Fault interrupt pending, see GPU_FAULT_STATUS", "status": "Critical" }
+        }
+      },
+      {
+        "field_name": "COMPUTE_DONE_INT",
+        "start_bit": 1,
+        "bit_length": 1,
+        "value_meaning": {
+          "0": { "meaning": "No compute completion interrupt", "status": "Healthy" },
+          "1": { "meaning": "Compute job completed", "status": "Healthy" }
+        }
+      },
+      {
+        "field_name": "RENDER_DONE_INT",
+        "start_bit": 2,
+        "bit_length": 1,
+        "value_meaning": {
+          "0": { "meaning": "No render completion interrupt", "status": "Healthy" },
+          "1": { "meaning": "Render job completed", "status": "Healthy" }
+        }
+      },
+      {
+        "field_name": "PAGE_FAULT_INT",
+        "start_bit": 3,
+        "bit_length": 1,
+        "value_meaning": {
+          "0": { "meaning": "No memory page fault", "status": "Healthy" },
+          "1": { "meaning": "GPU MMU page fault detected", "status": "Critical" }
+        }
+      },
+      {
+        "field_name": "THERMAL_INT",
+        "start_bit": 4,
+        "bit_length": 1,
+        "value_meaning": {
+          "0": { "meaning": "No thermal interrupt", "status": "Healthy" },
+          "1": { "meaning": "Thermal threshold crossed, see GPU_THERMAL_STATUS", "status": "Warning" }
+        }
+      },
+      {
+        "field_name": "VSYNC_INT",
+        "start_bit": 5,
+        "bit_length": 1,
+        "value_meaning": {
+          "0": { "meaning": "No vertical sync interrupt", "status": "Healthy" },
+          "1": { "meaning": "Vertical sync interrupt triggered", "status": "Healthy" }
+        }
+      },
+      {
+        "field_name": "RESERVED",
+        "start_bit": 6,
+        "bit_length": 26,
+        "value_meaning": {
+          "0": { "meaning": "Reserved, must be zero", "status": "Healthy" }
+        }
+      }
+    ]
+  },
+
+  "0x000C": {
+    "name": "GPU_INT_ENABLE",
+    "description": "Interrupt enable mask register; each bit gates the corresponding interrupt in GPU_INT_STATUS",
+    "access_type": "RW",
+    "current_value": "0x0000003F",
+    "bit_fields": [
+      {
+        "field_name": "FAULT_INT_EN",
+        "start_bit": 0,
+        "bit_length": 1,
+        "value_meaning": {
+          "0": { "meaning": "Fault interrupt masked", "status": "Warning" },
+          "1": { "meaning": "Fault interrupt enabled", "status": "Healthy" }
+        }
+      },
+      {
+        "field_name": "COMPUTE_DONE_INT_EN",
+        "start_bit": 1,
+        "bit_length": 1,
+        "value_meaning": {
+          "0": { "meaning": "Compute done interrupt masked", "status": "Healthy" },
+          "1": { "meaning": "Compute done interrupt enabled", "status": "Healthy" }
+        }
+      },
+      {
+        "field_name": "RENDER_DONE_INT_EN",
+        "start_bit": 2,
+        "bit_length": 1,
+        "value_meaning": {
+          "0": { "meaning": "Render done interrupt masked", "status": "Healthy" },
+          "1": { "meaning": "Render done interrupt enabled", "status": "Healthy" }
+        }
+      },
+      {
+        "field_name": "PAGE_FAULT_INT_EN",
+        "start_bit": 3,
+        "bit_length": 1,
+        "value_meaning": {
+          "0": { "meaning": "Page fault interrupt masked", "status": "Warning" },
+          "1": { "meaning": "Page fault interrupt enabled", "status": "Healthy" }
+        }
+      },
+      {
+        "field_name": "THERMAL_INT_EN",
+        "start_bit": 4,
+        "bit_length": 1,
+        "value_meaning": {
+          "0": { "meaning": "Thermal interrupt masked", "status": "Warning" },
+          "1": { "meaning": "Thermal interrupt enabled", "status": "Healthy" }
+        }
+      },
+      {
+        "field_name": "VSYNC_INT_EN",
+        "start_bit": 5,
+        "bit_length": 1,
+        "value_meaning": {
+          "0": { "meaning": "VSync interrupt masked", "status": "Healthy" },
+          "1": { "meaning": "VSync interrupt enabled", "status": "Healthy" }
+        }
+      },
+      {
+        "field_name": "RESERVED",
+        "start_bit": 6,
+        "bit_length": 26,
+        "value_meaning": {
+          "0": { "meaning": "Reserved, must be zero", "status": "Healthy" }
+        }
+      }
+    ]
+  },
+
+  "0x0010": {
+    "name": "GPU_INT_CLEAR",
+    "description": "Write-1-to-clear interrupt status register; writing 1 to a bit clears the corresponding interrupt in GPU_INT_STATUS",
+    "access_type": "WO",
+    "current_value": "0x00000000",
+    "bit_fields": [
+      {
+        "field_name": "FAULT_INT_CLR",
+        "start_bit": 0,
+        "bit_length": 1,
+        "value_meaning": {
+          "0": { "meaning": "No effect", "status": "Healthy" },
+          "1": { "meaning": "Clears FAULT_INT in GPU_INT_STATUS", "status": "Healthy" }
+        }
+      },
+      {
+        "field_name": "COMPUTE_DONE_INT_CLR",
+        "start_bit": 1,
+        "bit_length": 1,
+        "value_meaning": {
+          "0": { "meaning": "No effect", "status": "Healthy" },
+          "1": { "meaning": "Clears COMPUTE_DONE_INT in GPU_INT_STATUS", "status": "Healthy" }
+        }
+      },
+      {
+        "field_name": "RENDER_DONE_INT_CLR",
+        "start_bit": 2,
+        "bit_length": 1,
+        "value_meaning": {
+          "0": { "meaning": "No effect", "status": "Healthy" },
+          "1": { "meaning": "Clears RENDER_DONE_INT in GPU_INT_STATUS", "status": "Healthy" }
+        }
+      },
+      {
+        "field_name": "PAGE_FAULT_INT_CLR",
+        "start_bit": 3,
+        "bit_length": 1,
+        "value_meaning": {
+          "0": { "meaning": "No effect", "status": "Healthy" },
+          "1": { "meaning": "Clears PAGE_FAULT_INT in GPU_INT_STATUS", "status": "Healthy" }
+        }
+      },
+      {
+        "field_name": "THERMAL_INT_CLR",
+        "start_bit": 4,
+        "bit_length": 1,
+        "value_meaning": {
+          "0": { "meaning": "No effect", "status": "Healthy" },
+          "1": { "meaning": "Clears THERMAL_INT in GPU_INT_STATUS", "status": "Healthy" }
+        }
+      },
+      {
+        "field_name": "VSYNC_INT_CLR",
+        "start_bit": 5,
+        "bit_length": 1,
+        "value_meaning": {
+          "0": { "meaning": "No effect", "status": "Healthy" },
+          "1": { "meaning": "Clears VSYNC_INT in GPU_INT_STATUS", "status": "Healthy" }
+        }
+      },
+      {
+        "field_name": "RESERVED",
+        "start_bit": 6,
+        "bit_length": 26,
+        "value_meaning": {
+          "0": { "meaning": "Reserved, must be zero", "status": "Healthy" }
+        }
+      }
+    ]
+  },
+
+  "0x0014": {
+    "name": "GPU_FAULT_STATUS",
+    "description": "Latched fault register capturing the type and source of the most recent hardware fault",
+    "access_type": "RO",
+    "current_value": "0x00000000",
+    "bit_fields": [
+      {
+        "field_name": "FAULT_TYPE",
+        "start_bit": 0,
+        "bit_length": 4,
+        "value_meaning": {
+          "0":  { "meaning": "No fault", "status": "Healthy" },
+          "1":  { "meaning": "MMU page fault (invalid virtual address)", "status": "Critical" },
+          "2":  { "meaning": "Bus error (AXI/AHB transaction failure)", "status": "Critical" },
+          "3":  { "meaning": "Watchdog timeout (GPU hang detected)", "status": "Critical" },
+          "4":  { "meaning": "Shader exception (illegal instruction)", "status": "Critical" },
+          "5":  { "meaning": "Memory ECC uncorrectable error", "status": "Critical" },
+          "6":  { "meaning": "Power rail undervoltage fault", "status": "Critical" },
+          "7":  { "meaning": "Thermal shutdown triggered", "status": "Critical" },
+          "8":  { "meaning": "DMA descriptor error", "status": "Warning" },
+          "15": { "meaning": "Unknown fault, firmware intervention required", "status": "Critical" }
+        }
+      },
+      {
+        "field_name": "FAULT_SOURCE",
+        "start_bit": 4,
+        "bit_length": 4,
+        "value_meaning": {
+          "0": { "meaning": "No source", "status": "Healthy" },
+          "1": { "meaning": "Vertex shader unit", "status": "Critical" },
+          "2": { "meaning": "Fragment shader unit", "status": "Critical" },
+          "3": { "meaning": "Compute shader unit", "status": "Critical" },
+          "4": { "meaning": "Texture unit", "status": "Critical" },
+          "5": { "meaning": "L2 cache / memory interface", "status": "Critical" },
+          "6": { "meaning": "Command processor", "status": "Critical" },
+          "7": { "meaning": "Display engine", "status": "Critical" }
+        }
+      },
+      {
+        "field_name": "FAULT_VALID",
+        "start_bit": 8,
+        "bit_length": 1,
+        "value_meaning": {
+          "0": { "meaning": "No latched fault present", "status": "Healthy" },
+          "1": { "meaning": "Fault data in this register is valid", "status": "Critical" }
+        }
+      },
+      {
+        "field_name": "RESERVED",
+        "start_bit": 9,
+        "bit_length": 23,
+        "value_meaning": {
+          "0": { "meaning": "Reserved, must be zero", "status": "Healthy" }
+        }
+      }
+    ]
+  },
+
+  "0x0018": {
+    "name": "GPU_ECC_STATUS",
+    "description": "ECC error detection status for GPU SRAM and L2 cache; reports single-bit correctable and multi-bit uncorrectable errors",
+    "access_type": "RO",
+    "current_value": "0x00000000",
+    "bit_fields": [
+      {
+        "field_name": "SBE_COUNT",
+        "start_bit": 0,
+        "bit_length": 8,
+        "value_meaning": {
+          "0":   { "meaning": "No single-bit ECC errors detected", "status": "Healthy" },
+          "1":   { "meaning": "1 correctable single-bit error (SBE)", "status": "Warning" },
+          "255": { "meaning": "255 or more SBEs, memory reliability degraded", "status": "Critical" }
+        }
+      },
+      {
+        "field_name": "MBE_DETECTED",
+        "start_bit": 8,
+        "bit_length": 1,
+        "value_meaning": {
+          "0": { "meaning": "No multi-bit ECC error", "status": "Healthy" },
+          "1": { "meaning": "Uncorrectable multi-bit ECC error detected", "status": "Critical" }
+        }
+      },
+      {
+        "field_name": "ECC_ENABLED",
+        "start_bit": 9,
+        "bit_length": 1,
+        "value_meaning": {
+          "0": { "meaning": "ECC protection disabled", "status": "Warning" },
+          "1": { "meaning": "ECC protection enabled", "status": "Healthy" }
+        }
+      },
+      {
+        "field_name": "RESERVED",
+        "start_bit": 10,
+        "bit_length": 22,
+        "value_meaning": {
+          "0": { "meaning": "Reserved, must be zero", "status": "Healthy" }
+        }
+      }
+    ]
+  },
+
+  "0x001C": {
+    "name": "GPU_THERMAL_STATUS",
+    "description": "GPU die temperature and thermal throttling state as reported by the on-die thermal sensor",
+    "access_type": "RO",
+    "current_value": "0x00004037",
+    "bit_fields": [
+      {
+        "field_name": "TEMPERATURE",
+        "start_bit": 0,
+        "bit_length": 10,
+        "value_meaning": {
+          "0":   { "meaning": "0°C (sensor may be offline)", "status": "Warning" },
+          "55":  { "meaning": "55°C — normal operating temperature", "status": "Healthy" },
+          "80":  { "meaning": "80°C — elevated, check airflow", "status": "Warning" },
+          "95":  { "meaning": "95°C — thermal throttling threshold", "status": "Warning" },
+          "105": { "meaning": "105°C — critical temperature, shutdown imminent", "status": "Critical" }
+        }
+      },
+      {
+        "field_name": "THROTTLE_LEVEL",
+        "start_bit": 10,
+        "bit_length": 3,
+        "value_meaning": {
+          "0": { "meaning": "No throttling, full performance", "status": "Healthy" },
+          "1": { "meaning": "Level 1 throttle: clock reduced ~10%", "status": "Warning" },
+          "2": { "meaning": "Level 2 throttle: clock reduced ~25%", "status": "Warning" },
+          "3": { "meaning": "Level 3 throttle: clock reduced ~50%", "status": "Warning" },
+          "4": { "meaning": "Level 4 throttle: minimum clock, emergency cooling", "status": "Critical" },
+          "7": { "meaning": "Thermal shutdown triggered", "status": "Critical" }
+        }
+      },
+      {
+        "field_name": "SENSOR_VALID",
+        "start_bit": 13,
+        "bit_length": 1,
+        "value_meaning": {
+          "0": { "meaning": "Thermal sensor data invalid or not ready", "status": "Warning" },
+          "1": { "meaning": "Thermal sensor reading is valid", "status": "Healthy" }
+        }
+      },
+      {
+        "field_name": "RESERVED",
+        "start_bit": 14,
+        "bit_length": 18,
+        "value_meaning": {
+          "0": { "meaning": "Reserved, must be zero", "status": "Healthy" }
+        }
+      }
+    ]
+  },
+
+  "0x0020": {
+    "name": "GPU_PWR_CTRL",
+    "description": "Power management control register for clock gating, power gating, and dynamic voltage frequency scaling (DVFS)",
+    "access_type": "RW",
+    "current_value": "0x00000073",
+    "bit_fields": [
+      {
+        "field_name": "CLK_GATE_EN",
+        "start_bit": 0,
+        "bit_length": 1,
+        "value_meaning": {
+          "0": { "meaning": "Clock gating disabled, all clocks running", "status": "Warning" },
+          "1": { "meaning": "Fine-grained clock gating enabled", "status": "Healthy" }
+        }
+      },
+      {
+        "field_name": "PWR_GATE_EN",
+        "start_bit": 1,
+        "bit_length": 1,
+        "value_meaning": {
+          "0": { "meaning": "Power gating disabled", "status": "Warning" },
+          "1": { "meaning": "Power gating enabled for idle domains", "status": "Healthy" }
+        }
+      },
+      {
+        "field_name": "DVFS_EN",
+        "start_bit": 2,
+        "bit_length": 1,
+        "value_meaning": {
+          "0": { "meaning": "DVFS disabled, fixed voltage/frequency", "status": "Healthy" },
+          "1": { "meaning": "Dynamic voltage and frequency scaling enabled", "status": "Healthy" }
+        }
+      },
+      {
+        "field_name": "PERF_LEVEL",
+        "start_bit": 3,
+        "bit_length": 3,
+        "value_meaning": {
+          "0": { "meaning": "Power save mode (minimum frequency)", "status": "Healthy" },
+          "1": { "meaning": "Low performance mode", "status": "Healthy" },
+          "2": { "meaning": "Medium performance mode", "status": "Healthy" },
+          "3": { "meaning": "High performance mode", "status": "Healthy" },
+          "4": { "meaning": "Turbo boost mode (thermal limits apply)", "status": "Warning" },
+          "7": { "meaning": "Reserved / invalid", "status": "Warning" }
+        }
+      },
+      {
+        "field_name": "SLEEP_EN",
+        "start_bit": 6,
+        "bit_length": 1,
+        "value_meaning": {
+          "0": { "meaning": "Sleep mode disabled", "status": "Healthy" },
+          "1": { "meaning": "GPU will enter sleep on next idle", "status": "Healthy" }
+        }
+      },
+      {
+        "field_name": "RESERVED",
+        "start_bit": 7,
+        "bit_length": 25,
+        "value_meaning": {
+          "0": { "meaning": "Reserved, must be zero", "status": "Healthy" }
+        }
+      }
+    ]
+  },
+
+  "0x0024": {
+    "name": "GPU_CLK_STATUS",
+    "description": "Clock domain status register indicating which functional blocks currently have active clocks",
+    "access_type": "RO",
+    "current_value": "0x0000001F",
+    "bit_fields": [
+      {
+        "field_name": "CORE_CLK_ACTIVE",
+        "start_bit": 0,
+        "bit_length": 1,
+        "value_meaning": {
+          "0": { "meaning": "Core clock domain gated off", "status": "Warning" },
+          "1": { "meaning": "Core clock domain active", "status": "Healthy" }
+        }
+      },
+      {
+        "field_name": "SHADER_CLK_ACTIVE",
+        "start_bit": 1,
+        "bit_length": 1,
+        "value_meaning": {
+          "0": { "meaning": "Shader clock gated off (shaders idle)", "status": "Healthy" },
+          "1": { "meaning": "Shader clock domain active", "status": "Healthy" }
+        }
+      },
+      {
+        "field_name": "MEM_CLK_ACTIVE",
+        "start_bit": 2,
+        "bit_length": 1,
+        "value_meaning": {
+          "0": { "meaning": "Memory interface clock gated off", "status": "Warning" },
+          "1": { "meaning": "Memory interface clock active", "status": "Healthy" }
+        }
+      },
+      {
+        "field_name": "DISPLAY_CLK_ACTIVE",
+        "start_bit": 3,
+        "bit_length": 1,
+        "value_meaning": {
+          "0": { "meaning": "Display clock gated off", "status": "Healthy" },
+          "1": { "meaning": "Display pixel clock active", "status": "Healthy" }
+        }
+      },
+      {
+        "field_name": "VIDEO_CLK_ACTIVE",
+        "start_bit": 4,
+        "bit_length": 1,
+        "value_meaning": {
+          "0": { "meaning": "Video decode/encode clock gated off", "status": "Healthy" },
+          "1": { "meaning": "Video engine clock active", "status": "Healthy" }
+        }
+      },
+      {
+        "field_name": "RESERVED",
+        "start_bit": 5,
+        "bit_length": 27,
+        "value_meaning": {
+          "0": { "meaning": "Reserved, must be zero", "status": "Healthy" }
+        }
+      }
+    ]
+  },
+
+  "0x0028": {
+    "name": "GPU_FREQ_STATUS",
+    "description": "Current operating frequency of the GPU shader core domain, in units of 10 MHz steps",
+    "access_type": "RO",
+    "current_value": "0x0000009B",
+    "bit_fields": [
+      {
+        "field_name": "CURRENT_FREQ",
+        "start_bit": 0,
+        "bit_length": 10,
+        "value_meaning": {
+          "0":   { "meaning": "0 MHz — clock stopped or domain powered off", "status": "Critical" },
+          "50":  { "meaning": "500 MHz — low power mode", "status": "Warning" },
+          "100": { "meaning": "1000 MHz — nominal operating frequency", "status": "Healthy" },
+          "155": { "meaning": "1550 MHz — high performance mode", "status": "Healthy" },
+          "200": { "meaning": "2000 MHz — turbo boost frequency", "status": "Warning" }
+        }
+      },
+      {
+        "field_name": "PLL_LOCKED",
+        "start_bit": 10,
+        "bit_length": 1,
+        "value_meaning": {
+          "0": { "meaning": "PLL unlocked, frequency unstable", "status": "Critical" },
+          "1": { "meaning": "PLL locked, stable frequency output", "status": "Healthy" }
+        }
+      },
+      {
+        "field_name": "FREQ_CHANGE_PENDING",
+        "start_bit": 11,
+        "bit_length": 1,
+        "value_meaning": {
+          "0": { "meaning": "No frequency change pending", "status": "Healthy" },
+          "1": { "meaning": "DVFS frequency change in progress", "status": "Warning" }
+        }
+      },
+      {
+        "field_name": "RESERVED",
+        "start_bit": 12,
+        "bit_length": 20,
+        "value_meaning": {
+          "0": { "meaning": "Reserved, must be zero", "status": "Healthy" }
+        }
+      }
+    ]
+  },
+
+  "0x002C": {
+    "name": "GPU_SHADER_STATUS",
+    "description": "Shader core occupancy and execution unit status across all active shader clusters",
+    "access_type": "RO",
+    "current_value": "0x00F00240",
+    "bit_fields": [
+      {
+        "field_name": "ACTIVE_WARPS",
+        "start_bit": 0,
+        "bit_length": 10,
+        "value_meaning": {
+          "0":   { "meaning": "No active warps, shader idle", "status": "Healthy" },
+          "256": { "meaning": "256 active warps — moderate utilization", "status": "Healthy" },
+          "512": { "meaning": "512 active warps — high utilization", "status": "Healthy" },
+          "576": { "meaning": "576 active warps — near maximum occupancy", "status": "Healthy" }
+        }
+      },
+      {
+        "field_name": "CORE_UTILIZATION",
+        "start_bit": 16,
+        "bit_length": 8,
+        "value_meaning": {
+          "0":   { "meaning": "0% — shader cores idle", "status": "Healthy" },
+          "128": { "meaning": "~50% — moderate workload", "status": "Healthy" },
+          "200": { "meaning": "~78% — typical gaming workload", "status": "Healthy" },
+          "240": { "meaning": "~94% — high utilization", "status": "Healthy" },
+          "255": { "meaning": "100% — fully saturated", "status": "Warning" }
+        }
+      },
+      {
+        "field_name": "RESERVED",
+        "start_bit": 24,
+        "bit_length": 8,
+        "value_meaning": {
+          "0": { "meaning": "Reserved, must be zero", "status": "Healthy" }
+        }
+      }
+    ]
+  },
+
+  "0x0030": {
+    "name": "GPU_PERF_CYCLE_LO",
+    "description": "Lower 32 bits of the 64-bit GPU free-running cycle counter; increments every GPU core clock cycle",
+    "access_type": "RO",
+    "current_value": "0xA3F19C80",
+    "bit_fields": [
+      {
+        "field_name": "CYCLE_COUNT_LO",
+        "start_bit": 0,
+        "bit_length": 32,
+        "value_meaning": {
+          "0":          { "meaning": "Counter at zero or freshly reset", "status": "Healthy" },
+          "2751832192": { "meaning": "~2.75 billion cycles elapsed since last reset", "status": "Healthy" }
+        }
+      }
+    ]
+  },
+
+  "0x0034": {
+    "name": "GPU_PERF_CYCLE_HI",
+    "description": "Upper 32 bits of the 64-bit GPU free-running cycle counter; pair with GPU_PERF_CYCLE_LO for full count",
+    "access_type": "RO",
+    "current_value": "0x000000FF",
+    "bit_fields": [
+      {
+        "field_name": "CYCLE_COUNT_HI",
+        "start_bit": 0,
+        "bit_length": 32,
+        "value_meaning": {
+          "0":   { "meaning": "Upper word zero, counter below 2^32 cycles", "status": "Healthy" },
+          "255": { "meaning": "Upper word = 255, long-running context", "status": "Healthy" }
+        }
+      }
+    ]
+  },
+
+  "0x0038": {
+    "name": "GPU_PERF_INSTR",
+    "description": "Shader instruction throughput counter; counts total shader instructions issued since last counter reset",
+    "access_type": "RO",
+    "current_value": "0x12D56A00",
+    "bit_fields": [
+      {
+        "field_name": "INSTR_COUNT",
+        "start_bit": 0,
+        "bit_length": 32,
+        "value_meaning": {
+          "0":          { "meaning": "No instructions issued or counter reset", "status": "Healthy" },
+          "316500480":  { "meaning": "~316M shader instructions issued", "status": "Healthy" }
+        }
+      }
+    ]
+  },
+
+  "0x003C": {
+    "name": "GPU_PERF_CACHE",
+    "description": "L2 cache performance counters; tracks hit rate, miss rate, and eviction events for cache efficiency monitoring",
+    "access_type": "RO",
+    "current_value": "0x60200064",
+    "bit_fields": [
+      {
+        "field_name": "L2_HIT_RATE",
+        "start_bit": 0,
+        "bit_length": 8,
+        "value_meaning": {
+          "0":   { "meaning": "0% hit rate — cache cold or thrashing", "status": "Critical" },
+          "100": { "meaning": "~39% hit rate — low, workload is memory-bound", "status": "Warning" },
+          "160": { "meaning": "~63% hit rate — moderate", "status": "Warning" },
+          "200": { "meaning": "~78% hit rate — acceptable for streaming workloads", "status": "Healthy" },
+          "230": { "meaning": "~90% hit rate — excellent cache efficiency", "status": "Healthy" }
+        }
+      },
+      {
+        "field_name": "L2_MISS_STALL",
+        "start_bit": 8,
+        "bit_length": 8,
+        "value_meaning": {
+          "0":  { "meaning": "No L2 miss stalls", "status": "Healthy" },
+          "32": { "meaning": "L2 miss stall rate ~12% — moderate memory pressure", "status": "Warning" },
+          "96": { "meaning": "L2 miss stall rate ~38% — memory bandwidth bottleneck", "status": "Critical" }
+        }
+      },
+      {
+        "field_name": "L2_EVICT_RATE",
+        "start_bit": 16,
+        "bit_length": 8,
+        "value_meaning": {
+          "0":  { "meaning": "No evictions", "status": "Healthy" },
+          "32": { "meaning": "Normal eviction rate for active workloads", "status": "Healthy" },
+          "96": { "meaning": "High eviction rate, cache may be undersized for workload", "status": "Warning" }
+        }
+      },
+      {
+        "field_name": "RESERVED",
+        "start_bit": 24,
+        "bit_length": 8,
+        "value_meaning": {
+          "0": { "meaning": "Reserved, must be zero", "status": "Healthy" }
+        }
+      }
+    ]
+  },
+
+  "0x0040": {
+    "name": "GPU_MEM_CTRL",
+    "description": "VRAM memory controller configuration register for burst length, arbitration policy, and ECC mode",
+    "access_type": "RW",
+    "current_value": "0x00000215",
+    "bit_fields": [
+      {
+        "field_name": "MEM_EN",
+        "start_bit": 0,
+        "bit_length": 1,
+        "value_meaning": {
+          "0": { "meaning": "Memory controller disabled", "status": "Critical" },
+          "1": { "meaning": "Memory controller enabled", "status": "Healthy" }
+        }
+      },
+      {
+        "field_name": "BURST_LEN",
+        "start_bit": 1,
+        "bit_length": 3,
+        "value_meaning": {
+          "0": { "meaning": "Burst length 1 (single transfer)", "status": "Healthy" },
+          "1": { "meaning": "Burst length 4 (64 bytes)", "status": "Healthy" },
+          "2": { "meaning": "Burst length 8 (128 bytes)", "status": "Healthy" },
+          "3": { "meaning": "Burst length 16 (256 bytes)", "status": "Healthy" },
+          "4": { "meaning": "Burst length 32 (512 bytes)", "status": "Healthy" },
+          "7": { "meaning": "Reserved / invalid", "status": "Warning" }
+        }
+      },
+      {
+        "field_name": "ARB_POLICY",
+        "start_bit": 4,
+        "bit_length": 2,
+        "value_meaning": {
+          "0": { "meaning": "Round-robin arbitration", "status": "Healthy" },
+          "1": { "meaning": "Priority-based arbitration", "status": "Healthy" },
+          "2": { "meaning": "Weighted fair queuing", "status": "Healthy" },
+          "3": { "meaning": "Reserved / invalid", "status": "Warning" }
+        }
+      },
+      {
+        "field_name": "ECC_MODE",
+        "start_bit": 6,
+        "bit_length": 2,
+        "value_meaning": {
+          "0": { "meaning": "ECC disabled", "status": "Warning" },
+          "1": { "meaning": "ECC detect only (no correction)", "status": "Warning" },
+          "2": { "meaning": "ECC detect and correct (SECDED)", "status": "Healthy" },
+          "3": { "meaning": "Reserved / invalid", "status": "Warning" }
+        }
+      },
+      {
+        "field_name": "RESERVED",
+        "start_bit": 8,
+        "bit_length": 24,
+        "value_meaning": {
+          "0": { "meaning": "Reserved, must be zero", "status": "Healthy" }
+        }
+      }
+    ]
+  },
+
+  "0x0044": {
+    "name": "GPU_MEM_BW_STATUS",
+    "description": "Memory bandwidth utilization status for read and write channels; values are percentage of peak theoretical bandwidth",
+    "access_type": "RO",
+    "current_value": "0x00004832",
+    "bit_fields": [
+      {
+        "field_name": "READ_BW_UTIL",
+        "start_bit": 0,
+        "bit_length": 8,
+        "value_meaning": {
+          "0":   { "meaning": "0% read bandwidth used", "status": "Healthy" },
+          "50":  { "meaning": "~20% read bandwidth", "status": "Healthy" },
+          "128": { "meaning": "~50% read bandwidth utilization", "status": "Healthy" },
+          "204": { "meaning": "~80% read bandwidth — high utilization", "status": "Warning" },
+          "255": { "meaning": "100% read bandwidth saturated", "status": "Critical" }
+        }
+      },
+      {
+        "field_name": "WRITE_BW_UTIL",
+        "start_bit": 8,
+        "bit_length": 8,
+        "value_meaning": {
+          "0":   { "meaning": "0% write bandwidth used", "status": "Healthy" },
+          "50":  { "meaning": "~20% write bandwidth", "status": "Healthy" },
+          "72":  { "meaning": "~28% write bandwidth utilization", "status": "Healthy" },
+          "204": { "meaning": "~80% write bandwidth — high", "status": "Warning" },
+          "255": { "meaning": "100% write bandwidth saturated", "status": "Critical" }
+        }
+      },
+      {
+        "field_name": "RESERVED",
+        "start_bit": 16,
+        "bit_length": 16,
+        "value_meaning": {
+          "0": { "meaning": "Reserved, must be zero", "status": "Healthy" }
+        }
+      }
+    ]
+  },
+
+  "0x0048": {
+    "name": "GPU_WATCHDOG_CTRL",
+    "description": "Hardware watchdog timer control register for detecting and recovering from GPU hangs",
+    "access_type": "RW",
+    "current_value": "0x000001F4",
+    "bit_fields": [
+      {
+        "field_name": "WDT_EN",
+        "start_bit": 0,
+        "bit_length": 1,
+        "value_meaning": {
+          "0": { "meaning": "Watchdog timer disabled", "status": "Warning" },
+          "1": { "meaning": "Watchdog timer enabled", "status": "Healthy" }
+        }
+      },
+      {
+        "field_name": "WDT_TIMEOUT",
+        "start_bit": 1,
+        "bit_length": 15,
+        "value_meaning": {
+          "0":   { "meaning": "Timeout = 0 (watchdog fires immediately, invalid)", "status": "Critical" },
+          "250": { "meaning": "Timeout = 250ms (default, aggressive hang detection)", "status": "Healthy" },
+          "500": { "meaning": "Timeout = 500ms (lenient for complex compute jobs)", "status": "Healthy" },
+          "2000":{ "meaning": "Timeout = 2000ms (permissive; may mask genuine hangs)", "status": "Warning" }
+        }
+      },
+      {
+        "field_name": "WDT_ACTION",
+        "start_bit": 16,
+        "bit_length": 2,
+        "value_meaning": {
+          "0": { "meaning": "Interrupt only on timeout", "status": "Warning" },
+          "1": { "meaning": "Interrupt then soft reset on timeout", "status": "Healthy" },
+          "2": { "meaning": "Hard reset on timeout", "status": "Warning" },
+          "3": { "meaning": "System reset on timeout", "status": "Warning" }
+        }
+      },
+      {
+        "field_name": "RESERVED",
+        "start_bit": 18,
+        "bit_length": 14,
+        "value_meaning": {
+          "0": { "meaning": "Reserved, must be zero", "status": "Healthy" }
+        }
+      }
+    ]
+  },
+
+  "0x004C": {
+    "name": "GPU_PAGE_FAULT_ADDR",
+    "description": "Captures the faulting virtual address from the most recent GPU MMU page fault event",
+    "access_type": "RO",
+    "current_value": "0x00000000",
+    "bit_fields": [
+      {
+        "field_name": "FAULT_ADDR",
+        "start_bit": 0,
+        "bit_length": 32,
+        "value_meaning": {
+          "0":          { "meaning": "No page fault recorded, or fault at address 0x0 (null pointer)", "status": "Healthy" },
+          "4294967295": { "meaning": "Fault at 0xFFFFFFFF — likely out-of-bounds access", "status": "Critical" }
+        }
+      }
+    ]
+  },
+
+  "0x0050": {
+    "name": "GPU_PERF_CTRL",
+    "description": "Performance counter control register for selecting events, enabling counters, and issuing resets",
+    "access_type": "RW",
+    "current_value": "0x00000001",
+    "bit_fields": [
+      {
+        "field_name": "PERF_CNT_EN",
+        "start_bit": 0,
+        "bit_length": 1,
+        "value_meaning": {
+          "0": { "meaning": "Performance counters disabled", "status": "Warning" },
+          "1": { "meaning": "Performance counters enabled and running", "status": "Healthy" }
+        }
+      },
+      {
+        "field_name": "PERF_CNT_RESET",
+        "start_bit": 1,
+        "bit_length": 1,
+        "value_meaning": {
+          "0": { "meaning": "Normal operation", "status": "Healthy" },
+          "1": { "meaning": "Reset all performance counters to zero (self-clears)", "status": "Healthy" }
+        }
+      },
+      {
+        "field_name": "PERF_EVENT_SEL",
+        "start_bit": 2,
+        "bit_length": 4,
+        "value_meaning": {
+          "0": { "meaning": "Count GPU clock cycles", "status": "Healthy" },
+          "1": { "meaning": "Count shader instructions issued", "status": "Healthy" },
+          "2": { "meaning": "Count L2 cache hits", "status": "Healthy" },
+          "3": { "meaning": "Count L2 cache misses", "status": "Healthy" },
+          "4": { "meaning": "Count memory read transactions", "status": "Healthy" },
+          "5": { "meaning": "Count memory write transactions", "status": "Healthy" },
+          "6": { "meaning": "Count compute jobs dispatched", "status": "Healthy" },
+          "7": { "meaning": "Count render jobs dispatched", "status": "Healthy" },
+          "8": { "meaning": "Count shader stall cycles", "status": "Healthy" },
+          "9": { "meaning": "Count interrupt events", "status": "Healthy" }
+        }
+      },
+      {
+        "field_name": "RESERVED",
+        "start_bit": 6,
+        "bit_length": 26,
+        "value_meaning": {
+          "0": { "meaning": "Reserved, must be zero", "status": "Healthy" }
+        }
+      }
+    ]
+  }
+}
