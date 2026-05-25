@@ -46,7 +46,7 @@ This application is designed for Hardware Validation Engineers, Embedded Firmwar
 2. **Installation:**
     ```bash
     git clone [https://github.com/](https://github.com/)ElmarLeonard9/hardware_register_monitoring_system
-    cd python-inventory-crud
+    cd hardware_register_monitoring_system
     pip install -r requirements.txt
     ```
 
